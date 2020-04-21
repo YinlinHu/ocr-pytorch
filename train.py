@@ -146,7 +146,7 @@ if __name__ == '__main__':
 
     if args.distributed:
         torch.cuda.set_device(args.local_rank)
-        torch.distributed.init_process_group(backend='nccl', init_method='env://')
+        torch.distributed.init_process_group(backend='gloo', init_method='env://')
         synchronize()
 
     img_mean = [0.485, 0.456, 0.406]
@@ -214,7 +214,7 @@ if __name__ == '__main__':
     )
     valid_loader = DataLoader(
         valid_set,
-        batch_size=args.batch,
+        batch_size=2,
         num_workers=2,
         sampler=data_sampler(valid_set, shuffle=False, distributed=args.distributed),
         collate_fn=collate_data,
